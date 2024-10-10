@@ -7,4 +7,6 @@
 
     <string name="onboarding_description">Lorem Ipsum is simply dummy text of  the printing and typesetting industry. Lorem Ipsum has</string>
     <string name="onboarding_button_text">Ayo Sewa barang!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
