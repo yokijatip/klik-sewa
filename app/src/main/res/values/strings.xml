@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Klik Sewa</string>
+
+    <!--  Onboarding Text  -->
+    <string name="onboarding_title_1">Akses barang kapan saja</string>
+    <string name="onboarding_title_2">yang anda ubtuhkan.</string>
+
+    <string name="onboarding_description">Lorem Ipsum is simply dummy text of  the printing and typesetting industry. Lorem Ipsum has</string>
+    <string name="onboarding_button_text">Ayo Sewa barang!</string>
+</resources>
