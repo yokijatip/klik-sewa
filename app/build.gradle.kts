@@ -46,6 +46,9 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
 
+//    Viewmodel Lifecycle
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

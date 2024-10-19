@@ -1,5 +1,6 @@
 package com.sinergi5.kliksewa.ui.auth
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +24,17 @@ class OnBoardingActivity : AppCompatActivity() {
             insets
         }
 
+        binding.apply {
+            btnOnboarding.setOnClickListener {
+                navigateToAuth()
+            }
+        }
 
+
+    }
+
+    private fun navigateToAuth() {
+        startActivity(Intent(this@OnBoardingActivity, AuthActivity::class.java))
+        finish()
     }
 }

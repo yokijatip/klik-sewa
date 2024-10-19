@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.auth.FirebaseAuth
 import com.sinergi5.kliksewa.R
 import com.sinergi5.kliksewa.databinding.ActivitySplashBinding
 import com.sinergi5.kliksewa.ui.auth.OnBoardingActivity
@@ -34,10 +35,20 @@ class SplashActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            delay(2000)
-            startActivity(Intent(this@SplashActivity, OnBoardingActivity::class.java))
-        }
+            delay(2000) // Simulasi loading atau splash screen
 
+            // Pengecekan apakah user sudah login atau belum
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            if (currentUser != null) {
+                // Jika user sudah login, arahkan ke halaman utama
+                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            } else {
+                // Jika user belum login, arahkan ke halaman OnBoarding
+                startActivity(Intent(this@SplashActivity, OnBoardingActivity::class.java))
+            }
+
+            finish() // Tutup SplashActivity
+        }
     }
 
 }

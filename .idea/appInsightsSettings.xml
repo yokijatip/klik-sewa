@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.sinergi5.kliksewa" />
+                  <option name="mobileSdkAppId" value="1:763418440615:android:edfb51fdba537e7c4afc82" />
+                  <option name="projectId" value="klik-sewa-sinergi5" />
+                  <option name="projectNumber" value="763418440615" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
