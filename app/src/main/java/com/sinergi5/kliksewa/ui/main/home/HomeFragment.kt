@@ -6,7 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.denzcoskun.imageslider.constants.ScaleTypes
+import com.denzcoskun.imageslider.models.SlideModel
+import com.sinergi5.kliksewa.R
+import com.sinergi5.kliksewa.adapter.CategoryAdapter
+import com.sinergi5.kliksewa.data.Category
 import com.sinergi5.kliksewa.databinding.FragmentHomeBinding
+import com.sinergi5.kliksewa.helper.HorizontalSpaceItemDecoration
 
 
 class HomeFragment : Fragment() {
@@ -14,6 +22,8 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var categoryAdapter: CategoryAdapter
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,6 +33,16 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         cart()
         notification()
+        imageAutoSlider()
+        setupCategory()
+
+//        Category Setup
+        recyclerView = binding.rvCategory
+        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.adapter = categoryAdapter
+        recyclerView.addItemDecoration(HorizontalSpaceItemDecoration(16))
+        recyclerView.adapter = categoryAdapter
+
 
 
         return binding.root
@@ -38,8 +58,35 @@ class HomeFragment : Fragment() {
     private fun notification() {
         binding.btnNotification.setOnClickListener {
             // Handle notification button click
-            Toast.makeText(requireContext(), "Notification button clicked", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Notification button clicked", Toast.LENGTH_SHORT)
+                .show()
         }
+    }
+
+    private fun imageAutoSlider() {
+        val imageList = ArrayList<SlideModel>()
+        binding.apply {
+            imageList.add(SlideModel(R.drawable.banner_modern_sofa))
+            imageList.add(SlideModel(R.drawable.banner_black_friday))
+
+            imageAutoSlider.setImageList(imageList, ScaleTypes.FIT)
+        }
+    }
+
+    private fun setupCategory() {
+        val categoryList = listOf(
+            Category(name = getString(R.string.camera), icon = R.drawable.ic_camera),
+            Category(name = getString(R.string.cookware), icon = R.drawable.ic_cutlery),
+            Category(name = getString(R.string.electronic), icon = R.drawable.ic_modern_tv),
+            Category(name = getString(R.string.music), icon = R.drawable.ic_headset),
+            Category(name = getString(R.string.room), icon = R.drawable.ic_house_rooms),
+            Category(name = getString(R.string.vehicle), icon = R.drawable.ic_car),
+        )
+        categoryAdapter = CategoryAdapter(categoryList) { category ->
+            // Handle category click
+            Toast.makeText(requireContext(), category.name, Toast.LENGTH_SHORT).show()
+        }
+
     }
 
 }

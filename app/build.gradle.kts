@@ -47,7 +47,10 @@ dependencies {
     implementation(libs.firebase.analytics)
 
 //    Viewmodel Lifecycle
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0")
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
+
+//    Image Auto Slider
+    implementation (libs.imageslideshow)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

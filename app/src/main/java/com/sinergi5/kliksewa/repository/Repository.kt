@@ -32,7 +32,8 @@ class Repository {
                 "phone_number" to phone,
                 "address" to "",
                 "profile_image_url" to "",
-                "created_at" to FieldValue.serverTimestamp()
+                "created_at" to FieldValue.serverTimestamp(),
+                "rented_items" to arrayListOf<String>()
             )
             firebaseFirestore.collection("Users").document(userId).set(user).await()
 
