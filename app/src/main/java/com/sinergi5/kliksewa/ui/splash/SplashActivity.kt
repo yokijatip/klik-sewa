@@ -35,6 +35,7 @@ class SplashActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
+            delay(1000)
             // Pengecekan apakah user sudah login atau belum
             val currentUser = FirebaseAuth.getInstance().currentUser
             if (currentUser != null) {

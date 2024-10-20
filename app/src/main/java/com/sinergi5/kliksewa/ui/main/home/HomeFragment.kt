@@ -1,5 +1,6 @@
 package com.sinergi5.kliksewa.ui.main.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,7 @@ import com.sinergi5.kliksewa.data.model.Category
 import com.sinergi5.kliksewa.databinding.FragmentHomeBinding
 import com.sinergi5.kliksewa.helper.HorizontalSpaceItemDecoration
 import com.sinergi5.kliksewa.repository.Repository
+import com.sinergi5.kliksewa.ui.detail.DetailActivity
 import com.sinergi5.kliksewa.utils.ViewModelFactory
 
 
@@ -56,8 +58,7 @@ class HomeFragment : Fragment() {
 
 //        ItemRecommendation Setup
         itemRecommendationAdapter = ItemAdapter { selectedItem ->
-            // Handle item click
-            Toast.makeText(requireContext(), selectedItem.name, Toast.LENGTH_SHORT).show()
+            selectedItem.itemId?.let { navigateToDetailActivity(it) }
         }
         recyclerViewItemRecommendation = binding.rvItemRecommendation
         recyclerViewItemRecommendation.layoutManager =
@@ -117,5 +118,12 @@ class HomeFragment : Fragment() {
         }
 
     }
+
+    private fun navigateToDetailActivity(itemId: String) {
+        val intent = Intent(context, DetailActivity::class.java)
+        intent.putExtra("ITEM_ID", itemId)
+        startActivity(intent)
+    }
+
 
 }

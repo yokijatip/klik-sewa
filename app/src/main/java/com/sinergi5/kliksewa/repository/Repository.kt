@@ -23,7 +23,12 @@ class Repository {
     }
 
     // Register user
-    suspend fun register(email: String, password: String, name: String, phone: String): Result<Unit> {
+    suspend fun register(
+        email: String,
+        password: String,
+        name: String,
+        phone: String
+    ): Result<Unit> {
         return try {
             val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             val userId = result.user?.uid ?: throw Exception("Failed to get user ID")
@@ -46,32 +51,74 @@ class Repository {
         }
     }
 
-//    Get Random Recommendation
     private var cachedRecommendations: List<Item>? = null
     private var lastCachedTime: Long = 0
-//    private val cacheExpirationTime = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
+
+    // Cache expiration set to 10 seconds for testing purposes
     private val cacheExpirationTime = 10 * 1000 // 10 seconds in milliseconds
+
     suspend fun getRandomRecommendation(): Result<List<Item>> {
         return try {
             val currentTime = System.currentTimeMillis()
-            if (cachedRecommendations != null && currentTime - lastCachedTime < cacheExpirationTime) {
-//                Return cached data
-                return Result.success(cachedRecommendations!!)
+
+            // Check if cache is valid
+            if (!isCacheExpired(currentTime)) {
+                cachedRecommendations?.let {
+                    return Result.success(it)
+                }
             }
 
+            // Fetch data from Firestore
             val snapshot = firebaseFirestore.collection("Items")
                 .whereEqualTo("availability", true) // Only available items
                 .get()
                 .await()
 
-            val items = snapshot.toObjects(Item::class.java)
+            val items = snapshot.documents.mapNotNull { document ->
+                val item = document.toObject(Item::class.java)
+                item?.itemId = document.id
+                Log.d("Repository", "Fetched Item: $item")
+                item
+            }
             val randomItems = items.shuffled().take(10)
-
-//            Cache the result
+            // Cache the result
+            cacheRecommendations(randomItems, currentTime)
+            Result.success(randomItems)
             cachedRecommendations = randomItems
             lastCachedTime = currentTime
-
+            Log.d("Repository", "Cached items: $cachedRecommendations")
             Result.success(randomItems)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    // Helper function to check if the cache has expired
+    private fun isCacheExpired(currentTime: Long): Boolean {
+        return cachedRecommendations == null || currentTime - lastCachedTime > cacheExpirationTime
+    }
+
+    // Helper function to cache the recommendations
+    private fun cacheRecommendations(recommendations: List<Item>, currentTime: Long) {
+        cachedRecommendations = recommendations
+        lastCachedTime = currentTime
+    }
+
+
+    //    Get Detail Items
+    suspend fun getDetailItem(itemId: String): Result<Item> {
+        return try {
+            val document = firebaseFirestore.collection("Items")
+                .document(itemId)
+                .get()
+                .await()
+
+            val item = document.toObject(Item::class.java)
+            if (item != null) {
+                Result.success(item)
+            } else {
+                Result.failure(Exception("Item not found"))
+            }
         } catch (e: Exception) {
             Result.failure(e)
         }
