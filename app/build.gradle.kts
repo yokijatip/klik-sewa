@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.gms.google-services")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -51,6 +52,10 @@ dependencies {
 
 //    Image Auto Slider
     implementation (libs.imageslideshow)
+
+//    Glide
+    implementation (libs.glide)
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

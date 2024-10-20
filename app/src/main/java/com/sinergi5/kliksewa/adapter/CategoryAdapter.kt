@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sinergi5.kliksewa.R
-import com.sinergi5.kliksewa.data.Category
+import com.sinergi5.kliksewa.data.model.Category
 
 class CategoryAdapter(
     private val categoryList: List<Category>,

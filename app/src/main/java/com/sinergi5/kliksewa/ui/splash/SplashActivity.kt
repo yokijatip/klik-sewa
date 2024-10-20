@@ -35,8 +35,6 @@ class SplashActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            delay(2000) // Simulasi loading atau splash screen
-
             // Pengecekan apakah user sudah login atau belum
             val currentUser = FirebaseAuth.getInstance().currentUser
             if (currentUser != null) {

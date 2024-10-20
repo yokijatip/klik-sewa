@@ -6,15 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 import com.sinergi5.kliksewa.R
 import com.sinergi5.kliksewa.adapter.CategoryAdapter
-import com.sinergi5.kliksewa.data.Category
+import com.sinergi5.kliksewa.adapter.ItemAdapter
+import com.sinergi5.kliksewa.data.model.Category
 import com.sinergi5.kliksewa.databinding.FragmentHomeBinding
 import com.sinergi5.kliksewa.helper.HorizontalSpaceItemDecoration
+import com.sinergi5.kliksewa.repository.Repository
+import com.sinergi5.kliksewa.utils.ViewModelFactory
 
 
 class HomeFragment : Fragment() {
@@ -22,8 +26,12 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var homeViewModel: HomeViewModel
+
     private lateinit var categoryAdapter: CategoryAdapter
+    private lateinit var itemRecommendationAdapter: ItemAdapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerViewItemRecommendation: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,6 +39,8 @@ class HomeFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        homeViewModel =
+            ViewModelProvider(this, ViewModelFactory(Repository()))[HomeViewModel::class.java]
         cart()
         notification()
         imageAutoSlider()
@@ -38,10 +48,29 @@ class HomeFragment : Fragment() {
 
 //        Category Setup
         recyclerView = binding.rvCategory
-        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = categoryAdapter
         recyclerView.addItemDecoration(HorizontalSpaceItemDecoration(16))
         recyclerView.adapter = categoryAdapter
+
+//        ItemRecommendation Setup
+        itemRecommendationAdapter = ItemAdapter { selectedItem ->
+            // Handle item click
+            Toast.makeText(requireContext(), selectedItem.name, Toast.LENGTH_SHORT).show()
+        }
+        recyclerViewItemRecommendation = binding.rvItemRecommendation
+        recyclerViewItemRecommendation.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewItemRecommendation.adapter = itemRecommendationAdapter
+        recyclerViewItemRecommendation.addItemDecoration(HorizontalSpaceItemDecoration(16))
+        recyclerViewItemRecommendation.adapter = itemRecommendationAdapter
+
+
+
+        homeViewModel.items.observe(viewLifecycleOwner) { items ->
+            itemRecommendationAdapter.submitList(items)
+        }
 
 
 
