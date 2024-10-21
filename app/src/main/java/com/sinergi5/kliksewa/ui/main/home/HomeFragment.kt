@@ -28,7 +28,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var homeViewModel: HomeViewModel
+//    private lateinit var homeViewModel: HomeViewModel
 
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var itemRecommendationAdapter: ItemAdapter
@@ -41,8 +41,16 @@ class HomeFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        homeViewModel =
-            ViewModelProvider(this, ViewModelFactory(Repository()))[HomeViewModel::class.java]
+
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //        homeViewModel =
+//            ViewModelProvider(this, ViewModelFactory(Repository()))[HomeViewModel::class.java]
         cart()
         notification()
         imageAutoSlider()
@@ -54,28 +62,25 @@ class HomeFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = categoryAdapter
         recyclerView.addItemDecoration(HorizontalSpaceItemDecoration(16))
-        recyclerView.adapter = categoryAdapter
 
-//        ItemRecommendation Setup
-        itemRecommendationAdapter = ItemAdapter { selectedItem ->
-            selectedItem.itemId?.let { navigateToDetailActivity(it) }
-        }
-        recyclerViewItemRecommendation = binding.rvItemRecommendation
-        recyclerViewItemRecommendation.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        recyclerViewItemRecommendation.adapter = itemRecommendationAdapter
-        recyclerViewItemRecommendation.addItemDecoration(HorizontalSpaceItemDecoration(16))
-        recyclerViewItemRecommendation.adapter = itemRecommendationAdapter
-
+////        ItemRecommendation Setup
+//        itemRecommendationAdapter = ItemAdapter { selectedItem ->
+//            selectedItem.itemId?.let { navigateToDetailActivity(it) }
+//        }
+//        recyclerViewItemRecommendation = binding.rvItemRecommendation
+//        recyclerViewItemRecommendation.layoutManager =
+//            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+//        recyclerViewItemRecommendation.adapter = itemRecommendationAdapter
+//        recyclerViewItemRecommendation.addItemDecoration(HorizontalSpaceItemDecoration(16))
+//        recyclerViewItemRecommendation.adapter = itemRecommendationAdapter
 
 
-        homeViewModel.items.observe(viewLifecycleOwner) { items ->
-            itemRecommendationAdapter.submitList(items)
-        }
+//
+//        homeViewModel.items.observe(viewLifecycleOwner) { items ->
+//            itemRecommendationAdapter.submitList(items)
+//        }
 
 
-
-        return binding.root
     }
 
     private fun cart() {
@@ -119,11 +124,11 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun navigateToDetailActivity(itemId: String) {
-        val intent = Intent(context, DetailActivity::class.java)
-        intent.putExtra("ITEM_ID", itemId)
-        startActivity(intent)
-    }
+//    private fun navigateToDetailActivity(itemId: String) {
+//        val intent = Intent(context, DetailActivity::class.java)
+//        intent.putExtra("ITEM_ID", itemId)
+//        startActivity(intent)
+//    }
 
 
 }
