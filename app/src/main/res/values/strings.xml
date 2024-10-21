@@ -44,6 +44,7 @@
     <string name="electronic">Electronic</string>
     <string name="recommendation">Recommendation</string>
     <string name="price_per_day">Price Per Day</string>
+    <string name="retry">Retry</string>
 
     <!--  Detail Produk  -->
     <string name="detail_item">Detail Item</string>

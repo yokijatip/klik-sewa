@@ -57,6 +57,14 @@ dependencies {
     implementation (libs.glide)
     implementation (libs.androidx.swiperefreshlayout)
 
+//    Shimmer effect
+    implementation (libs.shimmer)
+
+//    Kebutuhan untuk pemanggilan viewModel
+    implementation (libs.androidx.fragment.ktx) // Versi sesuai kebutuhan
+    implementation (libs.androidx.activity.ktx) // Versi sesuai kebutuhan
+
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

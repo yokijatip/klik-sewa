@@ -5,6 +5,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="darkGray">#7E7E7E</color>
     <color name="gray">#E5E5E5</color>
+    <color name="shimmer_color">#DDDDDD</color>
 
     <!-- Main Brand Colors -->
     <color name="primary_green">#0B6275</color>
