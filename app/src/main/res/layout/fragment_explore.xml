@@ -17,6 +17,7 @@
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -30,51 +31,69 @@
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
-                    android:text="@string/search"
                     android:background="@color/light_surface"
+                    android:text="@string/search"
                     android:textColorHint="@color/light_onSurface"
                     app:backgroundTint="@color/light_surfaceVariant"
                     app:defaultMarginsEnabled="false"
                     app:navigationIconTint="@color/light_onSurface" />
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/btn_filter"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
                     android:layout_marginStart="20dp"
-                    android:backgroundTint="@color/primary_green"
-                    app:strokeWidth="0dp">
+                    android:src="@drawable/ic_filter_list"
+                    app:tint="@color/black" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_filter_list"
-                        app:tint="@color/white" />
-
-                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_category"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:clipChildren="true"
+                android:clipToPadding="false"
+                android:paddingHorizontal="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                tools:itemCount="1"
+                tools:listitem="@layout/list_item_category_horizontal" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_item_explore"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="20dp"
+                app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_category"
+                tools:listitem="@layout/list_item_explore" />
 
             <com.google.android.material.search.SearchView
                 android:id="@+id/searchView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvSearchResults"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:paddingTop="16dp"
-                android:paddingHorizontal="16dp"
-                tools:listitem="@layout/list_item_explore"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvSearchResults"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="16dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/list_item_explore" />
 
             </com.google.android.material.search.SearchView>
 

@@ -56,6 +56,8 @@ dependencies {
 //    Glide
     implementation (libs.glide)
     implementation (libs.androidx.swiperefreshlayout)
+    implementation (libs.glidetovectoryou)
+
 
 //    Shimmer effect
     implementation (libs.shimmer)

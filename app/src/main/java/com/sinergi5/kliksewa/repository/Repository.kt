@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.sinergi5.kliksewa.data.model.CategoryItem
 import com.sinergi5.kliksewa.data.model.Item
 import kotlinx.coroutines.tasks.await
 
@@ -123,4 +124,46 @@ class Repository {
             Result.failure(e)
         }
     }
+
+    //    Get Category Items
+    suspend fun getCategoryItem(): Result<List<CategoryItem>> {
+        return try {
+            val snapshot = firebaseFirestore.collection("Categories")
+                .get()
+                .await()
+
+            val categories = snapshot.documents.mapNotNull { document ->
+                val category = document.toObject(CategoryItem::class.java)
+                category?.id = document.id
+                category
+            }
+
+            Result.success(categories)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun getItemsByCategoryId(categoryId: String): Result<List<Item>> {
+        return try {
+
+            val snapshot = firebaseFirestore.collection("Items")
+                .whereEqualTo("categoryId", categoryId)
+                .whereEqualTo("availability", true)
+                .get()
+                .await()
+
+            val items = snapshot.documents.mapNotNull {
+                val item = it.toObject(Item::class.java)
+                item?.itemId = it.id
+                item
+            }
+
+            Result.success(items)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
 }
