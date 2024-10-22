@@ -144,14 +144,17 @@ class Repository {
         }
     }
 
-    suspend fun getItemsByCategoryId(categoryId: String): Result<List<Item>> {
+    suspend fun getItemsByCategoryId(categoryId: String? = null): Result<List<Item>> {
         return try {
+            val query = firebaseFirestore.collection("Items")
+                .whereEqualTo("availability", true) // Only available items
 
-            val snapshot = firebaseFirestore.collection("Items")
-                .whereEqualTo("categoryId", categoryId)
-                .whereEqualTo("availability", true)
-                .get()
-                .await()
+            // Filter by categoryId only if it's not null
+            if (categoryId != null) {
+                query.whereEqualTo("categoryId", categoryId)
+            }
+
+            val snapshot = query.get().await()
 
             val items = snapshot.documents.mapNotNull {
                 val item = it.toObject(Item::class.java)
@@ -164,6 +167,7 @@ class Repository {
             Result.failure(e)
         }
     }
+
 
 
 }

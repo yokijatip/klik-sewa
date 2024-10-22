@@ -48,24 +48,25 @@ dependencies {
     implementation(libs.firebase.analytics)
 
 //    Viewmodel Lifecycle
-    implementation (libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
 //    Image Auto Slider
-    implementation (libs.imageslideshow)
+    implementation(libs.imageslideshow)
 
 //    Glide
-    implementation (libs.glide)
-    implementation (libs.androidx.swiperefreshlayout)
-    implementation (libs.glidetovectoryou)
-
+    implementation(libs.glide)
+    implementation(libs.androidx.swiperefreshlayout)
+    implementation(libs.glidetovectoryou)
 
 //    Shimmer effect
-    implementation (libs.shimmer)
+    implementation(libs.shimmer)
 
 //    Kebutuhan untuk pemanggilan viewModel
-    implementation (libs.androidx.fragment.ktx) // Versi sesuai kebutuhan
-    implementation (libs.androidx.activity.ktx) // Versi sesuai kebutuhan
+    implementation(libs.androidx.fragment.ktx) // Versi sesuai kebutuhan
+    implementation(libs.androidx.activity.ktx) // Versi sesuai kebutuhan
 
+//    Picasso
+    implementation(libs.picasso)
 
 
     implementation(libs.androidx.core.ktx)

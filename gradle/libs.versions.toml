@@ -18,6 +18,7 @@ activity = "1.9.2"
 constraintlayout = "2.1.4"
 firebaseAuthKtx = "23.0.0"
 firebaseFirestoreKtx = "25.1.0"
+picasso = "2.71828"
 shimmer = "0.5.0"
 swiperefreshlayout = "1.1.0"
 
@@ -41,6 +42,7 @@ androidx-activity = { group = "androidx.activity", name = "activity", version.re
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
+picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
 
 [plugins]
