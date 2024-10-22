@@ -36,4 +36,12 @@
         <item name="cornerFamily">rounded</item>
     </style>
 
+
+    <!--  Bottom Navigation Bar -->
+    <style name="BottomNavTextStyle" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:fontFamily">@font/inter_light</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">10sp</item>>
+    </style>
+
 </resources>

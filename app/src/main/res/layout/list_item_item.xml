@@ -4,25 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="200dp"
     android:layout_height="wrap_content"
-    android:layout_marginStart="10dp"
+    android:layout_marginStart="5dp"
     android:layout_marginTop="10dp"
     android:layout_marginBottom="20dp"
     android:backgroundTint="@color/white"
-    app:cardCornerRadius="16dp"
+    app:cardCornerRadius="8dp"
     app:cardElevation="4dp"
     app:cardMaxElevation="6dp"
     app:cardPreventCornerOverlap="true"
-
     app:strokeWidth="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="140dp"
-            android:layout_margin="8dp"
             app:cardCornerRadius="8dp"
             app:strokeWidth="0dp">
 
@@ -44,7 +43,7 @@
             android:layout_marginEnd="10dp"
             android:ellipsize="end"
             android:fontFamily="@font/inter_regular"
-            android:maxLines="2"
+            android:maxLines="1"
             android:textSize="13sp"
             tools:text="Fujifilm Analog Retro 2024, Full Attachment" />
 
@@ -70,8 +69,8 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="10dp"
-            android:backgroundTint="@color/primary_green"
-            app:cardCornerRadius="8dp"
+            android:backgroundTint="@color/secondary_green"
+            app:cardCornerRadius="4dp"
             app:strokeWidth="0dp">
 
             <TextView
@@ -93,11 +92,3 @@
 
 
 </com.google.android.material.card.MaterialCardView>
-
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginTop="8dp"-->
-    <!--android:fontFamily="@font/inter_semi_bold"-->
-    <!--android:textSize="14sp"-->
-    <!--tools:text="Canera Fujifilm 2024 - Full attachment" />-->

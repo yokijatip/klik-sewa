@@ -2,17 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:gravity="center"
-    android:layout_gravity="center"
     android:backgroundTint="@color/white"
     app:cardCornerRadius="16dp"
     app:cardElevation="4dp"
     app:cardMaxElevation="6dp"
     app:cardPreventCornerOverlap="true"
     app:strokeWidth="0dp">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,7 +21,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="140dp"
-            app:cardCornerRadius="8dp"
+            app:cardCornerRadius="4dp"
             app:strokeWidth="0dp">
 
             <ImageView
@@ -69,8 +68,8 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="10dp"
-            android:backgroundTint="@color/primary_green"
-            app:cardCornerRadius="8dp"
+            android:backgroundTint="@color/secondary_green"
+            app:cardCornerRadius="4dp"
             app:strokeWidth="0dp">
 
             <TextView

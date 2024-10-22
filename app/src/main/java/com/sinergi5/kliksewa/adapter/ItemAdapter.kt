@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.sinergi5.kliksewa.R
 import com.sinergi5.kliksewa.data.model.Item
 import com.sinergi5.kliksewa.databinding.ListItemItemBinding
+import com.sinergi5.kliksewa.helper.CommonHelper
 
 class ItemAdapter(private val onItemClicked: (Item) -> Unit) :
     ListAdapter<Item, ItemAdapter.ItemViewHolder>(ItemDiffCallback()) {
@@ -36,8 +37,7 @@ class ItemAdapter(private val onItemClicked: (Item) -> Unit) :
                 tvItemName.text = item.name
                 tvItemType.text = item.type
 //                tvItemPrice.text = "Rp ${item.price_per_day} / $pricePerDay"
-                val price = item.priceDay.toString()
-                tvItemPrice.text = "Rp $price / $pricePerDay"
+                tvItemPrice.text = item.priceDay?.let { CommonHelper.formatPrice(it) }
                 Log.d("ItemAdapter", "Image URL: ${imageUrl}")
                 Glide.with(root.context)
                     .load(item.imageUrls?.firstOrNull())

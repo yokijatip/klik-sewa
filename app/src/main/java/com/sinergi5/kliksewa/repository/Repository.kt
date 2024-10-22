@@ -146,12 +146,12 @@ class Repository {
 
     suspend fun getItemsByCategoryId(categoryId: String? = null): Result<List<Item>> {
         return try {
-            val query = firebaseFirestore.collection("Items")
+            var query = firebaseFirestore.collection("Items")
                 .whereEqualTo("availability", true) // Only available items
 
             // Filter by categoryId only if it's not null
             if (categoryId != null) {
-                query.whereEqualTo("categoryId", categoryId)
+                query = query.whereEqualTo("categoryId", categoryId)
             }
 
             val snapshot = query.get().await()
