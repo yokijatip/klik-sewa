@@ -70,5 +70,11 @@
 
     <!--  Cart  -->
     <string name="cart">Cart</string>
+    <string name="apply">Apply</string>
+    <string name="total">Total</string>
+    <string name="total_payment">Total Payment</string>
+    <string name="checkout">Checkout</string>
+    <string name="proceed_to_payment">Proceed Payment</string>
+    <string name="input_promo_code">Input Voucher Promo</string>
 
 </resources>

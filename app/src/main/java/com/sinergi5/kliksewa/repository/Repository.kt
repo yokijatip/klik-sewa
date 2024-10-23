@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sinergi5.kliksewa.data.model.CategoryItem
 import com.sinergi5.kliksewa.data.model.Item
+import com.sinergi5.kliksewa.data.model.StoreAddress
 import kotlinx.coroutines.tasks.await
 
 class Repository {
@@ -168,6 +169,138 @@ class Repository {
         }
     }
 
+    suspend fun registerAsOwner(
+        name: String,
+        description: String,
+        phoneNumber: String,
+        address: StoreAddress,
+        whatsappNumber: String? = null // Optional, default menggunakan phoneNumber jika null
+    ): Result<String> {
+        return try {
+            val userId = firebaseAuth.currentUser?.uid
+                ?: return Result.failure(Exception("User not authenticated"))
+
+            // Generate unique store ID
+            val storeId = firebaseFirestore.collection("stores").document().id
+
+            // Create store document
+            val store = hashMapOf(
+                "storeId" to storeId,
+                "ownerId" to userId,
+                "name" to name,
+                "description" to description,
+                "address" to hashMapOf(
+                    "street" to address.street,
+                    "city" to address.city,
+                    "province" to address.province,
+                    "postalCode" to address.postalCode,
+                    "detail" to address.detail,
+                    "coordinates" to address.coordinates?.let {
+                        hashMapOf(
+                            "latitude" to it.latitude,
+                            "longitude" to it.longitude
+                        )
+                    }
+                ),
+                "phoneNumber" to phoneNumber,
+                "whatsappNumber" to (whatsappNumber ?: phoneNumber),
+                "operationalHours" to hashMapOf(
+                    "monday" to hashMapOf("open" to "08:00", "close" to "17:00"),
+                    "tuesday" to hashMapOf("open" to "08:00", "close" to "17:00"),
+                    "wednesday" to hashMapOf("open" to "08:00", "close" to "17:00"),
+                    "thursday" to hashMapOf("open" to "08:00", "close" to "17:00"),
+                    "friday" to hashMapOf("open" to "08:00", "close" to "17:00"),
+                    "saturday" to hashMapOf("open" to "08:00", "close" to "17:00"),
+                    "sunday" to hashMapOf("open" to "08:00", "close" to "17:00")
+                ),
+                "rating" to 0.0,
+                "totalReviews" to 0,
+                "storeImages" to listOf<String>(),
+                "status" to "pending", // Store perlu diverifikasi admin sebelum aktif
+                "createdAt" to FieldValue.serverTimestamp(),
+                "updatedAt" to FieldValue.serverTimestamp()
+            )
+
+            // Start a batch write
+            firebaseFirestore.runBatch { batch ->
+                // Create new store document
+                batch.set(
+                    firebaseFirestore.collection("stores").document(storeId),
+                    store
+                )
+
+                // Update user's role and add storeId reference
+                batch.update(
+                    firebaseFirestore.collection("users").document(userId),
+                    mapOf(
+                        "role" to "owner",
+                        "storeId" to storeId,
+                        "updatedAt" to FieldValue.serverTimestamp()
+                    )
+                )
+            }.await()
+
+            Result.success(storeId)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    // Extension function untuk validasi input
+    fun validateStoreInput(
+        name: String,
+        description: String,
+        phoneNumber: String,
+        address: StoreAddress
+    ): Result<Unit> {
+        return try {
+            require(name.length >= 3) { "Nama toko minimal 3 karakter" }
+            require(description.length >= 10) { "Deskripsi toko minimal 10 karakter" }
+            require(phoneNumber.matches(Regex("^\\+?[0-9]{10,13}$"))) { "Format nomor telepon tidak valid" }
+            require(address.street.isNotBlank()) { "Alamat jalan harus diisi" }
+            require(address.city.isNotBlank()) { "Kota harus diisi" }
+            require(address.province.isNotBlank()) { "Provinsi harus diisi" }
+            require(address.postalCode.matches(Regex("^[0-9]{5}$"))) { "Kode pos tidak valid" }
+
+            Result.success(Unit)
+        } catch (e: IllegalArgumentException) {
+            Result.failure(e)
+        }
+    }
+
+    // Fungsi untuk mengecek status verifikasi toko
+    suspend fun checkStoreStatus(storeId: String): Result<String> {
+        return try {
+            val store = firebaseFirestore.collection("stores")
+                .document(storeId)
+                .get()
+                .await()
+
+            val status =
+                store.getString("status") ?: return Result.failure(Exception("Status not found"))
+            Result.success(status)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    // Fungsi untuk mengecek apakah user sudah memiliki toko
+    suspend fun checkIfUserHasStore(): Result<Boolean> {
+        return try {
+            val userId = firebaseAuth.currentUser?.uid
+                ?: return Result.failure(Exception("User not authenticated"))
+
+            val user = firebaseFirestore.collection("users")
+                .document(userId)
+                .get()
+                .await()
+
+            val hasStore = !user.getString("storeId").isNullOrEmpty()
+            Result.success(hasStore)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 
 
 }

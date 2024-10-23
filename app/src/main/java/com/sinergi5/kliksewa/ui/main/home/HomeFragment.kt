@@ -20,6 +20,7 @@ import com.sinergi5.kliksewa.databinding.FragmentHomeBinding
 import com.sinergi5.kliksewa.helper.HorizontalSpaceItemDecoration
 import com.sinergi5.kliksewa.helper.UiState
 import com.sinergi5.kliksewa.repository.Repository
+import com.sinergi5.kliksewa.ui.cart.CartActivity
 import com.sinergi5.kliksewa.ui.detail.DetailActivity
 import com.sinergi5.kliksewa.utils.ViewModelFactory
 
@@ -63,6 +64,7 @@ class HomeFragment : Fragment() {
         setupCategory()
         setupItemRecommendations()
         setupSwipeRefresh()
+        navigateToCart()
     }
 
     private fun setupSwipeRefresh() {
@@ -170,6 +172,13 @@ class HomeFragment : Fragment() {
         val intent = Intent(context, DetailActivity::class.java)
         intent.putExtra("ITEM_ID", itemId)
         startActivity(intent)
+    }
+
+    private fun navigateToCart() {
+        binding.btnCart.setOnClickListener {
+            val intent = Intent(context, CartActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 
