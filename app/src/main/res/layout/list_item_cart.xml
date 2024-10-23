@@ -67,6 +67,7 @@
             android:orientation="vertical">
 
             <ImageButton
+                android:id="@+id/btn_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -87,6 +88,7 @@
                 android:orientation="horizontal">
 
                 <ImageButton
+                    android:id="@+id/btn_minus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@null"
@@ -106,6 +108,7 @@
 
 
                 <ImageButton
+                    android:id="@+id/btn_plus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@null"

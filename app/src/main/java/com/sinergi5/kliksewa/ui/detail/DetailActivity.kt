@@ -1,6 +1,8 @@
 package com.sinergi5.kliksewa.ui.detail
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +16,7 @@ import com.sinergi5.kliksewa.data.model.Item
 import com.sinergi5.kliksewa.databinding.ActivityDetailBinding
 import com.sinergi5.kliksewa.repository.Repository
 import com.sinergi5.kliksewa.utils.ViewModelFactory
+import kotlinx.coroutines.delay
 
 class DetailActivity : AppCompatActivity() {
 
@@ -32,6 +35,7 @@ class DetailActivity : AppCompatActivity() {
             insets
         }
         backButtonHandler()
+        addToCartButtonHandler()
         viewModel =
             ViewModelProvider(this, ViewModelFactory(Repository()))[DetailViewModel::class.java]
 
@@ -57,6 +61,31 @@ class DetailActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun addToCartButtonHandler() {
+        binding.apply {
+            btnRentNow.setOnClickListener {
+                addItemToCart()
+                disableButtonWithDelay()
+            }
+        }
+    }
+
+    private fun addItemToCart() {
+        val itemId = intent.getStringExtra("ITEM_ID")
+        if (itemId != null) {
+            viewModel.addItemToCart(itemId)
+        }
+    }
+
+    private fun disableButtonWithDelay() {
+        binding.btnRentNow.isEnabled = false
+        // Set delay (misal 1 detik) agar tombol tidak bisa ditekan langsung
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.btnRentNow.isEnabled = true
+        }, 1000)
+    }
+
 
     private fun bindDataToUi(item: Item) {
         binding.apply {
