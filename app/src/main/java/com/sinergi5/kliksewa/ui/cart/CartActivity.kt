@@ -8,13 +8,20 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.sinergi5.kliksewa.R
 import com.sinergi5.kliksewa.adapter.CartItemAdapter
+import com.sinergi5.kliksewa.data.model.CartItem
 import com.sinergi5.kliksewa.databinding.ActivityCartBinding
 import com.sinergi5.kliksewa.helper.CommonHelper
 import com.sinergi5.kliksewa.repository.Repository
 import com.sinergi5.kliksewa.utils.ViewModelFactory
+import kotlinx.coroutines.launch
 
 @Suppress("DEPRECATION")
 class CartActivity : AppCompatActivity() {
@@ -39,10 +46,8 @@ class CartActivity : AppCompatActivity() {
         }
 
         setupUi()
-
-        // Fetch cart items
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-        viewModel.getCartItems()
+        setupRecyclerView()
+        observeViewModel()
 
     }
 
@@ -50,6 +55,68 @@ class CartActivity : AppCompatActivity() {
         handleBackButton()
         setupInputUnhidden()
     }
+
+
+    private fun setupRecyclerView() {
+        cartAdapter = CartItemAdapter(
+            onQuantityChanged = { cartItem, newQuantity ->
+                viewModel.updateQuantity(cartItem.id, newQuantity)
+            },
+            onRemoveClicked = { cartItem ->
+                showRemoveConfirmationDialog(cartItem)
+            }
+        )
+
+        binding.rvCart.apply {
+            adapter = cartAdapter
+            layoutManager = LinearLayoutManager(this@CartActivity)
+            addItemDecoration(
+                DividerItemDecoration(
+                    this@CartActivity,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
+        }
+    }
+
+    private fun showRemoveConfirmationDialog(cartItem: CartItem) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Hapus Item")
+            .setMessage("Apakah Anda yakin ingin menghapus ${cartItem.item.name} dari keranjang?")
+            .setNegativeButton("Batal") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setPositiveButton("Hapus") { dialog, _ ->
+                viewModel.removeItem(cartItem.id)
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+
+    private fun observeViewModel() {
+        lifecycleScope.launch {
+            viewModel.cartItems.collect { items ->
+                cartAdapter.submitList(items)
+                updateEmptyState(items)
+                updateTotalPrice(items)
+            }
+        }
+    }
+
+    private fun updateEmptyState(items: List<CartItem>) {
+        binding.apply {
+            //groupEmptyCart.isVisible = items.isEmpty()
+            rvCart.isVisible = items.isNotEmpty()
+            btnProceedNow.isEnabled = items.isNotEmpty()
+        }
+    }
+
+    private fun updateTotalPrice(items: List<CartItem>) {
+        val total = items.sumOf { it.item.priceDay!! * it.quantity }
+        binding.tvItemTotalPrice.text = CommonHelper.formatPrice(total)
+    }
+
 
     private fun handleBackButton() {
         binding.btnBack.setOnClickListener {
@@ -77,7 +144,6 @@ class CartActivity : AppCompatActivity() {
             }
         }
     }
-
 
 
 }

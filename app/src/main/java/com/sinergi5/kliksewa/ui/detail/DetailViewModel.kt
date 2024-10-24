@@ -15,10 +15,9 @@ class DetailViewModel(private val repository: Repository) : ViewModel() {
     private val _addItemToCart = MutableLiveData<Result<Unit>>()
     val addItemToCart: LiveData<Result<Unit>> get() = _addItemToCart
 
-    fun addItemToCart(itemId: String, quantity: Int? = 1) {
+    fun addItemToCart(itemId: String, quantity: Int = 1) {
         viewModelScope.launch {
-            val result = repository.addItemToCart(itemId, quantity)
-            _addItemToCart.postValue(result)
+            repository.addToCart(itemId, quantity)
         }
     }
 

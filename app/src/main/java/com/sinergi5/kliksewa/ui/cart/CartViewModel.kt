@@ -1,12 +1,8 @@
 package com.sinergi5.kliksewa.ui.cart
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sinergi5.kliksewa.data.model.CartItem
-import com.sinergi5.kliksewa.helper.UiState
 import com.sinergi5.kliksewa.repository.Repository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +17,11 @@ class CartViewModel(private val repository: Repository) : ViewModel() {
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    fun loadCartItems() {
+    init {
+        loadCartItems()
+    }
+
+    private fun loadCartItems() {
         viewModelScope.launch {
             _isLoading.value = true
             repository.getCartItems()
