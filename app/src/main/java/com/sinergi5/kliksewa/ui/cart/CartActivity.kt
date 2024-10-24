@@ -4,16 +4,28 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.firebase.auth.FirebaseAuth
 import com.sinergi5.kliksewa.R
+import com.sinergi5.kliksewa.adapter.CartItemAdapter
 import com.sinergi5.kliksewa.databinding.ActivityCartBinding
+import com.sinergi5.kliksewa.helper.CommonHelper
+import com.sinergi5.kliksewa.repository.Repository
+import com.sinergi5.kliksewa.utils.ViewModelFactory
 
 @Suppress("DEPRECATION")
 class CartActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCartBinding
+
+    private val viewModel: CartViewModel by viewModels {
+        ViewModelFactory(Repository())
+    }
+
+    private lateinit var cartAdapter: CartItemAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityCartBinding.inflate(layoutInflater)
@@ -28,6 +40,9 @@ class CartActivity : AppCompatActivity() {
 
         setupUi()
 
+        // Fetch cart items
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+        viewModel.getCartItems()
 
     }
 
@@ -62,4 +77,7 @@ class CartActivity : AppCompatActivity() {
             }
         }
     }
+
+
+
 }

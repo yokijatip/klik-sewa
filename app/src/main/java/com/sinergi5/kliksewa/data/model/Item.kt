@@ -18,5 +18,7 @@ data class Item(
     var priceDay: Int? = null,
     var rentedAt: Timestamp? = null,
     var rentedId: String? = "",
-    var type: String? = ""
+    var type: String? = "",
+    val numOfRatings: Int = 0,
+    val averageRating: Double = 0.0
 ) : Parcelable

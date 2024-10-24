@@ -8,42 +8,56 @@ import androidx.lifecycle.viewModelScope
 import com.sinergi5.kliksewa.data.model.CartItem
 import com.sinergi5.kliksewa.helper.UiState
 import com.sinergi5.kliksewa.repository.Repository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class CartViewModel(private val repository: Repository) : ViewModel() {
 
-    private val _uiState = MutableLiveData<UiState<List<CartItem>>>()
-    val uiState: LiveData<UiState<List<CartItem>>> = _uiState
+    private val _cartItems = MutableStateFlow<List<CartItem>>(emptyList())
+    val cartItems: StateFlow<List<CartItem>> = _cartItems.asStateFlow()
 
-    init {
-        // Fetch cart items when ViewModel is initialized
-        getCartItems()  // Assume `getUserId()` retrieves the current user ID
-    }
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    private fun getCartItems() {
+    fun loadCartItems() {
         viewModelScope.launch {
-            _uiState.value = UiState.Loading
-            try {
-                val result = repository.getCartItems()
-                result.fold(
-                    onSuccess = { cartItems ->
-                        _uiState.value = UiState.Success(cartItems)
-                        Log.d("CartViewModel", "Cart items fetched successfully | Items: $cartItems")
-                    },
-                    onFailure = { exception ->
-                        _uiState.value = UiState.Error(exception.message ?: "Unknown error occurred")
-                        Log.e("CartViewModel", "Error fetching cart items: $exception")
-                    }
-                )
-            } catch (e: Exception) {
-                _uiState.value = UiState.Error(e.message ?: "Unknown error occurred")
-            }
+            _isLoading.value = true
+            repository.getCartItems()
+                .onSuccess { items ->
+                    _cartItems.value = items
+                }
+                .onFailure { exception ->
+                    // Handle error
+                }
+            _isLoading.value = false
         }
     }
 
-    // Function to refresh the cart items
-    fun refreshCartItems() {
-        getCartItems()
+
+    fun updateQuantity(cartId: String, quantity: Int) {
+        viewModelScope.launch {
+            repository.updateCartItemQuantity(cartId, quantity)
+                .onSuccess {
+                    loadCartItems() // Reload cart items
+                }
+                .onFailure { exception ->
+                    // Handle error
+                }
+        }
+    }
+
+    fun removeItem(cartId: String) {
+        viewModelScope.launch {
+            repository.removeCartItem(cartId)
+                .onSuccess {
+                    loadCartItems() // Reload cart items
+                }
+                .onFailure { exception ->
+                    // Handle error
+                }
+        }
     }
 
 }

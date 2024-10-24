@@ -6,7 +6,6 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sinergi5.kliksewa.data.model.CartItem
 import com.sinergi5.kliksewa.data.model.CategoryItem
-import com.sinergi5.kliksewa.data.model.FavoriteItem
 import com.sinergi5.kliksewa.data.model.Item
 import kotlinx.coroutines.tasks.await
 
@@ -170,134 +169,116 @@ class Repository {
         }
     }
 
-    //    Add Item To Cart
-    suspend fun addItemToCart(itemId: String, quantity: Int? = 1): Result<Unit> {
-        val userId = firebaseAuth.currentUser?.uid ?: return Result.failure(Exception("User not authenticated"))
-        return try {
-            val cartItem = hashMapOf(
-                "itemId" to itemId,
-                "quantity" to quantity,
-                "addedAt" to FieldValue.serverTimestamp()
-            )
 
-            firebaseFirestore.collection("Users")
-                .document(userId)
-                .collection("Cart")
+    /**
+     * Menambahkan item ke keranjang
+     */
+    suspend fun addToCart(itemId: String, quantity: Int = 1): Result<Boolean> = try {
+
+        val cartsCollection = firebaseFirestore.collection("Users")
+            .document(firebaseAuth.currentUser?.uid ?: "")
+            .collection("Cart")
+
+        val cartItem = hashMapOf(
+            "userId" to firebaseAuth.currentUser?.uid,
+            "itemId" to itemId,
+            "quantity" to quantity,
+            "addedAt" to FieldValue.serverTimestamp()
+        )
+
+        // Cek apakah item sudah ada di cart
+        val existingItem = cartsCollection
+            .whereEqualTo("itemId", itemId)
+            .get()
+            .await()
+
+        if (existingItem.isEmpty) {
+            // Jika belum ada, tambahkan item baru
+            cartsCollection.add(cartItem).await()
+        } else {
+            // Jika sudah ada, update quantity
+            val currentQuantity = existingItem.documents[0].getLong("quantity")?.toInt() ?: 0
+            cartsCollection.document(existingItem.documents[0].id)
+                .update("quantity", currentQuantity + quantity)
+                .await()
+        }
+        Result.success(true)
+    } catch (e: Exception) {
+        Result.failure(e)
+    }
+
+    /**
+     * Mengambil list item dalam keranjang
+     */
+    suspend fun getCartItems(): Result<List<CartItem>> = try {
+        val cartsCollection = firebaseFirestore.collection("Users")
+            .document(firebaseAuth.currentUser?.uid ?: "")
+            .collection("Cart")
+
+        val cartSnapshot = cartsCollection.get().await()
+        val cartItems = mutableListOf<CartItem>()
+
+        for (document in cartSnapshot.documents) {
+            val itemId = document.getString("itemId") ?: continue
+            val quantity = document.getLong("quantity")?.toInt() ?: 1
+
+            // Mengambil detail item dari collection Items
+            val itemSnapshot = firebaseFirestore.collection("Items")
                 .document(itemId)
-                .set(cartItem)
-                .await()
-
-            Log.d("Cart", "Item added to cart successfully")
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Log.e("Cart", "Error adding item: $e")
-            Result.failure(e)
-        }
-    }
-
-//    Remove Item From Cart
-    suspend fun removeItemFromCart(userId: String, itemId: String): Result<Unit> {
-        return try {
-            // Menghapus item dari sub-collection "Cart" di dalam dokumen user
-            firebaseFirestore.collection("Users")
-                .document(userId)
-                .collection("Cart")
-                .document(itemId)
-                .delete()
-                .await()
-
-            Log.d("Cart", "Item removed from cart successfully")
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Log.e("Cart", "Error removing item from cart", e)
-            Result.failure(e)
-        }
-    }
-
-
-    //    Add Item To Favorites
-    suspend fun addItemToFavorites(userId: String, itemId: String): Result<Unit> {
-        return try {
-            val favoriteItem = hashMapOf(
-                "itemId" to itemId,
-                "addedAt" to FieldValue.serverTimestamp()
-            )
-
-            // Menambahkan item ke sub-collection "Favorites" di dalam dokumen user
-            firebaseFirestore.collection("Users")
-                .document(userId)
-                .collection("Favorites")
-                .document(itemId) // menggunakan itemId sebagai documentId agar tidak duplikat
-                .set(favoriteItem)
-                .await()
-
-            Log.d("Favorites", "Item added to favorites successfully")
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Log.e("Favorites", "Error adding item to favorites", e)
-            Result.failure(e)
-        }
-    }
-
-    suspend fun getCartItems(): Result<List<CartItem>> {
-        val userId = firebaseAuth.currentUser?.uid ?: return Result.failure(Exception("User not authenticated"))
-        return try {
-            val snapshot = firebaseFirestore.collection("Users")
-                .document(userId)
-                .collection("Cart")
                 .get()
                 .await()
 
-            val cartItems = snapshot.documents.mapNotNull { document ->
-                document.toObject(CartItem::class.java)
+            if (itemSnapshot.exists()) {
+                val item = itemSnapshot.toObject(Item::class.java)?.copy(itemId = itemSnapshot.id)
+                item?.let {
+                    cartItems.add(
+                        CartItem(
+                            id = document.id,
+                            item = it,
+                            quantity = quantity
+                        )
+                    )
+                }
             }
-
-            Result.success(cartItems)
-        } catch (e: Exception) {
-            Log.e("Cart", "Error fetching cart items", e)
-            Result.failure(e)
         }
+        Result.success(cartItems)
+    } catch (e: Exception) {
+        Result.failure(e)
     }
 
-
-    //    Remove Item From Favorites
-    suspend fun removeItemFromFavorites(userId: String, itemId: String): Result<Unit> {
-        return try {
-            // Menghapus item dari sub-collection "Favorites" di dalam dokumen user
-            firebaseFirestore.collection("Users")
-                .document(userId)
-                .collection("Favorites")
-                .document(itemId)
-                .delete()
+    /**
+     * Mengupdate quantity item di keranjang
+     */
+    suspend fun updateCartItemQuantity(cartId: String, quantity: Int): Result<Boolean> = try {
+        val cartsCollection = firebaseFirestore.collection("Users")
+            .document(firebaseAuth.currentUser?.uid ?: "")
+            .collection("Cart")
+        if (quantity <= 0) {
+            removeCartItem(cartId)
+        } else {
+            cartsCollection.document(cartId)
+                .update("quantity", quantity)
                 .await()
-
-            Log.d("Favorites", "Item removed from favorites successfully")
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Log.e("Favorites", "Error removing item from favorites", e)
-            Result.failure(e)
         }
+        Result.success(true)
+    } catch (e: Exception) {
+        Result.failure(e)
     }
 
-    suspend fun getFavoriteItems(userId: String): Result<List<FavoriteItem>> {
-        return try {
-            val snapshot = firebaseFirestore.collection("Users")
-                .document(userId)
-                .collection("Favorites")
-                .get()
-                .await()
-
-            val favoriteItems = snapshot.documents.mapNotNull { document ->
-                document.toObject(FavoriteItem::class.java)
-            }
-
-            Result.success(favoriteItems)
-        } catch (e: Exception) {
-            Log.e("Favorites", "Error fetching favorite items", e)
-            Result.failure(e)
-        }
+    /**
+     * Menghapus item dari keranjang
+     */
+    suspend fun removeCartItem(cartId: String): Result<Boolean> = try {
+        val cartsCollection = firebaseFirestore.collection("Users")
+            .document(firebaseAuth.currentUser?.uid ?: "")
+            .collection("Cart")
+        cartsCollection.document(cartId)
+            .delete()
+            .await()
+        Result.success(true)
+    } catch (e: Exception) {
+        Result.failure(e)
     }
-
 
 
     /**
