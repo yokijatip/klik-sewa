@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <font android:font="@font/airbnb_cereal_w_lt"/>
+    <font android:font="@font/airbnb_cereal_w_bk"/>
+    <font android:font="@font/airbnb_cereal_w_md"/>
+    <font android:font="@font/airbnb_cereal_w_bd" />
+    <font android:font="@font/airbnb_cereal_w_xbd"/>
+    <font android:font="@font/airbnb_cereal_w_blk"/>
+</font-family>

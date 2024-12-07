@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+
+    <color name="black">#FF000000</color>
+    <color name="font_debroome_black">#191919</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="pearl">#fbfcf8</color>
+    <color name="off_white">#faf9f6</color>
+
+    <!-- Custom Color -->
+    <color name="emerald_200">#a7f3d0</color>
+    <color name="emerald_500">#10b981</color>
+    <color name="emerald_700">#047857</color>
+
+    <color name="orange_200">#fed7aa</color>
+    <color name="orange_500">#f97316</color>
+    <color name="orange_700">#c2410c</color>
+
+    <color name="teal_200">#7AB1C2</color>
+    <color name="teal_500">#0B6275</color>
+    <color name="teal_700">#044E5F</color>
+
+    <color name="sky_200">#bae6fd</color>
+    <color name="sky_500">#0ea5e9</color>
+    <color name="sky_700">#0369a1</color>
+
+</resources>
