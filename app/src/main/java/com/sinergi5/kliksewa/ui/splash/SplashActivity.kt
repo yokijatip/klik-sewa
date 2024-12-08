@@ -8,11 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.auth.FirebaseAuth
 import com.sinergi5.kliksewa.MainActivity
 import com.sinergi5.kliksewa.R
 import com.sinergi5.kliksewa.databinding.ActivitySplashBinding
-import com.sinergi5.kliksewa.ui.auth.AuthActivity
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @SuppressLint("CustomSplashScreen")
@@ -26,14 +27,27 @@ class SplashActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupUI()
 
-        lifecycleScope.launch {
-            delay(2000)
-            navigateToAuth()
+        CoroutineScope(Dispatchers.Main).launch {
+            checkLoginStatus()
         }
 
     }
-    private fun navigateToAuth() {
-        val intent = Intent(this, AuthActivity::class.java)
+
+    private fun checkLoginStatus() {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+
+        lifecycleScope.launch {
+            // Tampilkan splash screen selama proses loading
+            if (currentUser != null) {
+                navigateToMainActivity()
+            } else {
+                navigateOnBoarding()
+            }
+        }
+    }
+
+    private fun navigateOnBoarding() {
+        val intent = Intent(this, OnBoardingActivity::class.java)
         startActivity(intent)
         finish()
     }

@@ -21,12 +21,27 @@
         android:indeterminate="true"
         android:indeterminateTint="@color/orange_500" />
 
-    <ImageView
-        android:id="@+id/iv_icon_app"
+    <ImageButton
+        android:id="@+id/btn_back"
         android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="60dp"
-        android:src="@drawable/icon_apps"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/transparent"
+        android:padding="8dp"
+        android:src="@drawable/ic_arrow_medium"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_icon_app"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_icon_app"
+        app:tint="@color/white" />
+
+    <TextView
+        android:id="@+id/iv_icon_app"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/airbnb_cereal_w_md"
+        android:text="@string/sign_up"
+        android:textColor="@color/white"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,7 +50,7 @@
         android:id="@+id/card_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="30dp"
         android:backgroundTint="@color/pearl"
         app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -50,16 +65,46 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <TextView
-                android:id="@+id/tv_login"
+            <!-- Fullname -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edt_username_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/username"
+                app:boxCornerRadiusTopStart="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@android:color/transparent"
+                    android:ellipsize="end"
+                    android:inputType="text"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Fullname -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edt_phone_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/phone_number"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/airbnb_cereal_w_md"
-                android:text="@string/login"
-                android:textAlignment="center"
-                android:textColor="@color/font_debroome_black"
-                android:textSize="30sp" />
+                app:boxCornerRadiusTopStart="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@android:color/transparent"
+                    android:ellipsize="end"
+                    android:inputType="phone"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Email -->
             <com.google.android.material.textfield.TextInputLayout
@@ -67,8 +112,9 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:hint="@string/email">
+                android:layout_marginTop="16dp"
+                android:hint="@string/email"
+                app:boxCornerRadiusTopStart="16dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_email"
@@ -89,6 +135,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:hint="@string/password"
+                app:boxCornerRadiusTopStart="16dp"
                 app:endIconMode="password_toggle">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -102,30 +149,52 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Confirmatoin Password -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edt_confirmation_password_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="@string/confirmation_password"
+                app:boxCornerRadiusTopStart="16dp"
+                app:endIconMode="password_toggle">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_confirmation_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@android:color/transparent"
+                    android:ellipsize="end"
+                    android:inputType="textPassword"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_login"
+                android:id="@+id/btn_sign_up"
                 android:layout_width="match_parent"
                 android:layout_height="62dp"
                 android:layout_marginTop="32dp"
                 android:fontFamily="@font/airbnb_cereal_w_md"
-                android:text="@string/login"
+                android:text="@string/sign_up"
                 app:cornerRadius="50dp"
                 app:textAllCaps="false" />
 
             <!-- Google Sign-In Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_google_sign_in"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="62dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/airbnb_cereal_w_md"
-                android:text="@string/sign_in_with_google"
+                android:text="@string/sign_up_with_google"
                 app:cornerRadius="50dp"
                 app:icon="@drawable/ic_google_icon_logo_svgrepo_com"
                 app:iconGravity="textStart"
                 app:iconTint="@null"
-                app:textAllCaps="false"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+                app:textAllCaps="false" />
 
             <View
                 android:layout_width="match_parent"
@@ -133,7 +202,7 @@
                 android:layout_weight="1" />
 
             <LinearLayout
-                android:id="@+id/tv_sign_up"
+                android:id="@+id/tv_sign_in"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -144,14 +213,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="2dp"
                     android:fontFamily="@font/airbnb_cereal_w_md"
-                    android:text="@string/create_new_account" />
+                    android:text="@string/already_have_account" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="2dp"
                     android:fontFamily="@font/airbnb_cereal_w_md"
-                    android:text="@string/sign_up"
+                    android:text="@string/login"
                     android:textColor="@color/font_debroome_black" />
 
             </LinearLayout>

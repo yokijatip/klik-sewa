@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.splash.OnBoardingActivity">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
+        android:layout_width="150dp"
+        android:layout_height="300dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="80dp"
+        android:elevation="0dp"
+        app:cardCornerRadius="100dp"
+        app:cardElevation="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeWidth="0dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/onboarding_women" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView3"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="-40dp"
+        android:layout_marginEnd="20dp"
+        android:elevation="0dp"
+        app:cardCornerRadius="100dp"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView"
+        app:strokeWidth="0dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/onboarding_men" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-50dp"
+        android:layout_marginTop="60dp"
+        android:backgroundTint="@color/teal_500"
+        android:elevation="0dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
+        app:layout_constraintStart_toEndOf="@+id/materialCardView"
+        app:layout_constraintTop_toTopOf="@+id/materialCardView"
+        app:strokeWidth="0dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/airbnb_cereal_w_md"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:text="@string/sewa_aja"
+            android:textColor="@color/white" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="-50dp"
+        android:backgroundTint="@color/orange_500"
+        android:elevation="0dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/materialCardView3"
+        app:layout_constraintTop_toTopOf="@+id/materialCardView3"
+        app:strokeWidth="0dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/airbnb_cereal_w_md"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:text="@string/sewa_aja"
+            android:textColor="@color/white" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rotationY="180"
+        android:src="@drawable/shape_klik_sewa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_auth"
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:fontFamily="@font/airbnb_cereal_w_md"
+        android:text="@string/onboarding_button_text"
+        app:cornerRadius="50dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:textAllCaps="false" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="80dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/btn_auth"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView3">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/airbnb_cereal_w_md"
+                android:text="@string/onboarding_title_top"
+                android:textAlignment="center"
+                android:textColor="@color/font_debroome_black"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:fontFamily="@font/airbnb_cereal_w_md"
+                    android:text="@string/app_name"
+                    android:textAlignment="center"
+                    android:textColor="@color/teal_500"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:fontFamily="@font/airbnb_cereal_w_md"
+                    android:text="@string/onboarding_title_bottom"
+                    android:textAlignment="center"
+                    android:textColor="@color/font_debroome_black"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/onboarding_description"
+            android:textAlignment="center" />
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

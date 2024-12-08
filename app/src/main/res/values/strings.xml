@@ -22,9 +22,23 @@
     <string name="create_new_account">Don\'t have any account?</string>
     <string name="already_have_account">Already have an account?</string>
     <string name="full_name_ktp">Full name on KTP</string>
+    <string name="username">Username</string>
+    <string name="phone_number">Phone Number</string>
     <string name="nik">NIK</string>
     <string name="password">Password</string>
     <string name="confirmation_password">Confirmation Password</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="sign_up_with_google">Sign up with Google</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--  Onboarding Text  -->
+    <string name="sewa_aja">#SewaAja</string>
+    <string name="lets_rent">#Let\'sRent</string>
+    <string name="onboarding_title_top">Akses barang kapan saja,</string>
+    <string name="onboarding_title_bottom"> yang anda butuhkan</string>
+    <string name="onboarding_description">Lorem Ipsum is simply dummy text of  the printing and typesetting industry. Lorem Ipsum has</string>
+    <string name="onboarding_button_text">Ayo Sewa Semuanya!</string>
 
 
 </resources>

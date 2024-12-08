@@ -6,4 +6,11 @@
         <item name="cornerSizeBottomLeft">0dp</item>
         <item name="cornerSizeBottomRight">0dp</item>
     </style>
+
+    <style name="BottomRoundCard" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeBottomLeft">50dp</item>
+        <item name="cornerSizeBottomRight">50dp</item>
+    </style>
 </resources>

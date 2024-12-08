@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.gms.google-services")
+
 }
 
 android {
@@ -49,6 +50,14 @@ dependencies {
     //noinspection UseTomlInstead
     implementation("com.google.firebase:firebase-analytics")
 
+    // Firebase Authentication
+    //noinspection UseTomlInstead
+    implementation("com.google.firebase:firebase-auth-ktx:23.1.0")
+
+    // Google Sign-In
+    //noinspection UseTomlInstead
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -60,6 +69,7 @@ dependencies {
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.activity)
+    implementation(libs.firebase.firestore.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
