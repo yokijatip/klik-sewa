@@ -13,6 +13,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_explore">Explore</string>
     <string name="menu_favorites">Favorites</string>
+    <string name="menu_cart">Cart</string>
 
     <!--  Auth -->
     <string name="login">Login</string>
@@ -39,6 +40,37 @@
     <string name="onboarding_title_bottom"> yang anda butuhkan</string>
     <string name="onboarding_description">Lorem Ipsum is simply dummy text of  the printing and typesetting industry. Lorem Ipsum has</string>
     <string name="onboarding_button_text">Ayo Sewa Semuanya!</string>
+
+    <!-- Home Fragment -->
+    <string name="your_balance">Your Balance</string>
+    <string name="vouchers">Vouchers</string>
+    <string name="available">Available</string>
+    <string name="initial_amount">Rp 500.000</string>
+    <string name="initial_vouchers">30</string>
+    <string name="special_for_you">Special For You</string>
+    <string name="recommended_for_you">Recommended For You</string>
+    <string name="view_all">View all</string>
+    <string name="placeholder_text_camera">Fujifilm Full Analog Free Lensa Tele dan Memory Holder</string>
+    <string name="placeholder_text_product_category">Camera</string>
+    <string name="placeholder_text_product_price">Rp 5.000</string>
+    <string name="placeholder_text_product_pricing_plan_per_hour">/ Per Hour</string>
+    <string name="placeholder_text_product_pricing_plan_per_day">/ Per Day</string>
+    <string name="placeholder_text_product_pricing_plan_per_week">/ Per Week</string>
+    <string name="placeholder_text_product_pricing_plan_per_month">/ Per Month</string>
+
+    <!-- Detail Product -->
+    <string name="detail_product">Detail Product</string>
+    <string name="price_per_day">Per Day</string>
+    <string name="price_per_hour">Per Hour</string>
+    <string name="price_per_week">Per Week</string>
+    <string name="price_per_month">Per Month</string>
+    <string name="placeholder_text_product_description">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</string>
+    <string name="read_more">Read More....</string>
+    <string name="show_less">Show Less</string>
+    <string name="placeholder_text_product_total_ratings">4.0</string>
+    <string name="add_to_cart">Add to cart</string>
+    <string name="check_out">Check out</string>
+
 
 
 </resources>

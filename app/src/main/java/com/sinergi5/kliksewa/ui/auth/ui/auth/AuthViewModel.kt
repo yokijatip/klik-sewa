@@ -1,5 +1,6 @@
 package com.sinergi5.kliksewa.ui.auth.ui.auth
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +9,10 @@ import com.sinergi5.kliksewa.repository.Repository
 import com.sinergi5.kliksewa.utils.Resource
 import kotlinx.coroutines.launch
 
-class AuthViewModel(private val repository: Repository) : ViewModel() {
+class AuthViewModel(context: Context) : ViewModel() {
+
+    private val repository = Repository(context)
+
     private val _loginResult = MutableLiveData<Resource<Boolean>>()
     val loginResult: LiveData<Resource<Boolean>> get() = _loginResult
 

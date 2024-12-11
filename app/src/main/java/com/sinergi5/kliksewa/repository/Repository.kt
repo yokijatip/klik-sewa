@@ -3,6 +3,7 @@ package com.sinergi5.kliksewa.repository
 import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.sinergi5.kliksewa.model.Product
 import com.sinergi5.kliksewa.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
@@ -115,4 +116,70 @@ class Repository(context: Context) {
             }
         }
     }
+
+    //    Get List Product
+    suspend fun getRandomProduct(): Resource<List<Product>> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val snapshot = firebaseFirestore.collection("Products")
+                    .get()
+                    .await()
+
+                val products = snapshot.documents.mapNotNull { doc ->
+                    doc.toObject(Product::class.java)?.copy(id = doc.id)
+                }
+                Resource.Success(products)
+            } catch (e: Exception) {
+                Resource.Error(e.message ?: "Terjadi kesalahan saat mengambil data produk")
+            }
+        }
+    }
+
+    //    Toggle Favorite Product
+    suspend fun toggleFavorite(productId: String, userId: String): Resource<Boolean> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val productRef = firebaseFirestore.collection("Products").document(productId)
+
+                firebaseFirestore.runTransaction { transaction ->
+                    val snapshot = transaction.get(productRef)
+                    val product = snapshot.toObject(Product::class.java)
+                        ?: throw Exception("Produk tidak ditemukan")
+
+                    val currentFavorites = product.favoriteBy.toMutableList()
+
+                    if (userId in currentFavorites) {
+                        currentFavorites.remove(userId)
+                    } else {
+                        currentFavorites.add(userId)
+                    }
+
+                    transaction.update(productRef, "favoriteBy", currentFavorites)
+                }.await()
+
+                Resource.Success(true)
+            } catch (e: Exception) {
+                Resource.Error(e.message ?: "Gagal mengubah status favorit")
+            }
+        }
+    }
+
+//    Get Detail Product by ID
+suspend fun getProductDetail(productId: String): Resource<Product> {
+    return withContext(Dispatchers.IO) {
+        try {
+            val snapshot = firebaseFirestore.collection("Products")
+                .document(productId)
+                .get()
+                .await()
+
+            val product = snapshot.toObject(Product::class.java)?.copy(id = snapshot.id)
+                ?: throw Exception("Produk tidak ditemukan")
+
+            Resource.Success(product)
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "Gagal mengambil detail produk")
+        }
+    }
+}
 }

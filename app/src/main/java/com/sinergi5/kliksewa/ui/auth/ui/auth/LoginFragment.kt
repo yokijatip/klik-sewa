@@ -12,7 +12,6 @@ import com.sinergi5.kliksewa.MainActivity
 import com.sinergi5.kliksewa.R
 import com.sinergi5.kliksewa.databinding.FragmentLoginBinding
 import com.sinergi5.kliksewa.helper.MyHelper
-import com.sinergi5.kliksewa.repository.Repository
 import com.sinergi5.kliksewa.utils.Resource
 import com.sinergi5.kliksewa.utils.ViewModelFactory
 
@@ -123,8 +122,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        val repository = Repository(requireActivity())
-        val viewModelFactory = ViewModelFactory(repository)
+        val viewModelFactory = ViewModelFactory(requireContext())
         viewModel = ViewModelProvider(this, viewModelFactory)[AuthViewModel::class.java]
     }
 

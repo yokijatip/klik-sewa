@@ -23,4 +23,10 @@
         android:label="@string/menu_favorites"
         tools:layout="@layout/fragment_favorites" />
 
+    <activity
+        android:id="@+id/nav_cart"
+        android:name="com.sinergi5.kliksewa.ui.cart.CartActivity"
+        android:label="@string/menu_cart"
+        tools:layout="@layout/fragment_favorites" />
+
 </navigation>

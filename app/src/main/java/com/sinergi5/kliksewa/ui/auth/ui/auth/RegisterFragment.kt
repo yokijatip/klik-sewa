@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.sinergi5.kliksewa.databinding.FragmentRegisterBinding
 import com.sinergi5.kliksewa.helper.MyHelper
-import com.sinergi5.kliksewa.repository.Repository
 import com.sinergi5.kliksewa.utils.Resource
 import com.sinergi5.kliksewa.utils.ViewModelFactory
 
@@ -44,8 +43,7 @@ class RegisterFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        val repository = Repository(requireActivity())
-        val viewModelFactory = ViewModelFactory(repository)
+        val viewModelFactory = ViewModelFactory(requireContext())
         viewModel = ViewModelProvider(this, viewModelFactory)[AuthViewModel::class.java]
     }
 
