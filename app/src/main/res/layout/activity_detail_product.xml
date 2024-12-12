@@ -65,6 +65,7 @@
                 android:id="@+id/btn_more_icon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:rotation="90"
                 android:padding="5dp"
                 android:src="@drawable/ic_more_vertical" />
 
@@ -340,12 +341,11 @@
                     android:id="@+id/tv_quantity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="30"
-                    android:layout_marginHorizontal="8dp"
                     android:layout_gravity="center"
+                    android:layout_marginHorizontal="8dp"
+                    android:text="@string/one"
                     android:textColor="@color/font_debroome_black"
-                    android:textSize="20sp"
-                    />
+                    android:textSize="20sp" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btn_quantity_plus"

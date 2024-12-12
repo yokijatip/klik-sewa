@@ -2,7 +2,9 @@ package com.sinergi5.kliksewa.ui.detail.product
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -37,6 +39,9 @@ class DetailProductActivity : AppCompatActivity() {
 
     private var isDescriptionExpanded = false
 
+    private var quantity = 1
+    private var productPrice = 0L
+    private var productName = ""
 
     companion object {
         const val PRODUCT_ID = "product_id"
@@ -50,6 +55,9 @@ class DetailProductActivity : AppCompatActivity() {
         setupViewModel()
         setupObservers()
         setupPricePlanRecyclerView()
+        setupButtonQuantity()
+        setupHandleBackButton()
+        observerAddItemToCart()
 
         productId = intent.getStringExtra("product_id") ?: run {
             MyHelper.showMessages("Product ID tidak valid", this)
@@ -58,6 +66,60 @@ class DetailProductActivity : AppCompatActivity() {
         }
 
         viewModel.getProductDetail(productId)
+    }
+
+    private fun setupButtonQuantity() {
+        binding.btnQuantityMin.setOnClickListener {
+            if (quantity > 1) {
+                quantity--
+                binding.tvQuantity.text = quantity.toString()
+            }
+        }
+        binding.btnQuantityPlus.setOnClickListener {
+            quantity++
+            binding.tvQuantity.text = quantity.toString()
+        }
+
+        binding.btnAddToCart.setOnClickListener {
+            val totalProductPrice = productPrice * quantity
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+            MyHelper.showMessages(
+                "Added to Cart : $quantity Price: $totalProductPrice User Id: $userId",
+                this
+            )
+            try {
+                viewModel.addToCart(productId, productName, quantity, productPrice)
+                Log.d("DetailProductActivity", "Product added to cart: $productId User Id: $userId")
+            } catch (e: Exception) {
+                MyHelper.showErrorSnackBar(binding.root, e.message.toString())
+                Log.e("DetailProductActivity", "Error adding to cart: ${e.message}")
+            }
+        }
+
+    }
+
+    private fun observerAddItemToCart() {
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.addToCartStatus.collect { resource ->
+                    when (resource) {
+                        is Resource.Loading -> {
+                            //binding.progressBar.visibility = View.VISIBLE
+                            //binding.contentLayout.visibility = View.GONE
+                            Log.d("DetailProductActivity", "Loading: ${resource.message}")
+                        }
+
+                        is Resource.Success -> {
+                            Log.d("DetailProductActivity", "Loading: ${resource.message}")
+                        }
+
+                        is Resource.Error -> {
+                            Log.d("DetailProductActivity", "Loading: ${resource.message}")
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun setupPricePlanRecyclerView() {
@@ -77,6 +139,7 @@ class DetailProductActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n", "DefaultLocale")
     private fun updateSelectedPricePlan(selectedPlan: PricePlan) {
         // Format harga dengan pemisah ribuan
+        productPrice = selectedPlan.price
         val formattedPrice = String.format("%,d", selectedPlan.price)
 
         binding.tvProductPrice.text = "Rp $formattedPrice"
@@ -118,6 +181,44 @@ class DetailProductActivity : AppCompatActivity() {
                 }
             }
         }
+
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.favoriteStatus.collect { resource ->
+                        when (resource) {
+                            is Resource.Loading -> {
+                                // Optional: Show loading indicator
+                            }
+
+                            is Resource.Success -> {
+                                // Optional: Show success message
+                            }
+
+                            is Resource.Error -> {
+                                MyHelper.showErrorSnackBar(
+                                    binding.root,
+                                    resource.message ?: "Terjadi kesalahan"
+                                )
+                            }
+                        }
+                    }
+                }
+
+                launch {
+                    viewModel.isProductFavorited.collect { isFavorited ->
+                        updateFavoriteIcon(isFavorited)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateFavoriteIcon(isFavorited: Boolean) {
+        binding.favoriteIcon.setImageResource(
+            if (isFavorited) R.drawable.ic_menu_heart_filled
+            else R.drawable.ic_menu_heart
+        )
     }
 
     @SuppressLint("SetTextI18n")
@@ -127,6 +228,8 @@ class DetailProductActivity : AppCompatActivity() {
         product.imageUrl.forEach { imageUrl ->
             imageList.add(SlideModel(imageUrl, scaleType = ScaleTypes.CENTER_CROP))
         }
+
+
         binding.ivProductImage.apply {
             setImageList(imageList)
             setSlideAnimation(AnimationTypes.DEPTH_SLIDE)
@@ -134,6 +237,7 @@ class DetailProductActivity : AppCompatActivity() {
 
         // Setup text content
         binding.tvProductName.text = product.name
+        productName = product.name
         binding.tvProductPrice.text = "Rp ${product.pricePerDay}"
         binding.tvDescription.text = product.description
         binding.tvProductTotalRatings.text = product.totalRating.toString()
@@ -154,21 +258,21 @@ class DetailProductActivity : AppCompatActivity() {
             binding.tvReadMore.visibility = if (lineCount > 2) View.VISIBLE else View.GONE
         }
 
-//            tvPricePerDay.text = getString(R.string.price_per_day_format, product.pricePerDay)
-//            tvPricePerWeek.text = getString(R.string.price_per_week_format, product.pricePerWeek)
-//            tvPricePerMonth.text = getString(R.string.price_per_month_format, product.pricePerMonth)
-//            tvLocation.text = product.location
-
         // Setup favorite status jika diperlukan
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
         val isFavorited = currentUserId?.let { userId ->
             product.favoriteBy.contains(userId)
         } ?: false
 
-        binding.favoriteIcon.setImageResource(
-            if (isFavorited) R.drawable.ic_menu_heart_filled
-            else R.drawable.ic_menu_heart
-        )
+        viewModel.setInitialFavoriteState(isFavorited)
+
+        binding.favoriteButton.setOnClickListener {
+            if (FirebaseAuth.getInstance().currentUser != null) {
+                viewModel.toggleFavorite(productId)
+            } else {
+                MyHelper.showMessages("Silakan login terlebih dahulu", this)
+            }
+        }
 
         val pricePlans = listOfNotNull(
             if (product.pricePerHour > 0) PricePlan("hour", product.pricePerHour) else null,
@@ -209,6 +313,15 @@ class DetailProductActivity : AppCompatActivity() {
     private fun setupViewModel() {
         val factory = ViewModelFactory(this)
         viewModel = ViewModelProvider(this, factory)[DetailProductViewModel::class.java]
+    }
+
+    private fun setupHandleBackButton() {
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
+        onBackPressedDispatcher.addCallback {
+            finish()
+        }
     }
 
     private fun setupUI() {

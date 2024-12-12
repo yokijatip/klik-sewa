@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sinergi5.kliksewa.ui.auth.ui.auth.AuthViewModel
+import com.sinergi5.kliksewa.ui.cart.CartViewModel
 import com.sinergi5.kliksewa.ui.detail.product.DetailProductViewModel
 import com.sinergi5.kliksewa.ui.home.HomeViewModel
 
@@ -16,6 +17,8 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
             return HomeViewModel(context) as T
         } else if (modelClass.isAssignableFrom(DetailProductViewModel::class.java)) {
             return DetailProductViewModel(context) as T
+        } else if (modelClass.isAssignableFrom(CartViewModel::class.java)) {
+            return CartViewModel(context) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

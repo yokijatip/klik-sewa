@@ -70,6 +70,16 @@
     <string name="placeholder_text_product_total_ratings">4.0</string>
     <string name="add_to_cart">Add to cart</string>
     <string name="check_out">Check out</string>
+    <string name="zero">0</string>
+    <string name="one">1</string>
+
+    <!-- My Cart -->
+    <string name="my_cart">My Cart</string>
+    <string name="sub_total">Subtotal : </string>
+    <string name="delivery_fee">Delivery Fee : </string>
+    <string name="discount">Discount : </string>
+    <string name="total">Total : </string>
+    <string name="placeholder_total">Rp 780.000</string>
 
 
 

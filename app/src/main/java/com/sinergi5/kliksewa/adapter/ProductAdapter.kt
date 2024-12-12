@@ -80,9 +80,9 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() 
                         .load(firstImageUrl)
                         .placeholder(R.drawable.placeholder_image)
                         .error(R.drawable.error_image)
-                        .into(ivProducImage)
+                        .into(ivProductImage)
                 } else {
-                    ivProducImage.setImageResource(R.drawable.placeholder_image)
+                    ivProductImage.setImageResource(R.drawable.placeholder_image)
                 }
 
                 val isFavorited = currentUserId?.let { userId ->
